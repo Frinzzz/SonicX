@@ -17,14 +17,12 @@ public class GameApp extends Application implements MenuSonicGrafico.Listener {
         stage.setTitle("Sonic Menu + Level Demo");
         stage.show();
 
-        // carica volumi salvati
         SoundManager.setMaster(SaveData.getMaster());
         SoundManager.setMusic(SaveData.getMusic());
         SoundManager.setSfx(SaveData.getSfx());
     }
 
     private void showMenu() {
-        // stop musica livello quando rientri nel menu
         SoundManager.stopMusic();
         MenuSonicGrafico menu = new MenuSonicGrafico(this, 1280, 720);
         stage.setScene(menu.getScene());
@@ -32,7 +30,10 @@ public class GameApp extends Application implements MenuSonicGrafico.Listener {
 
     @Override
     public void onStartLevelSelected(int index) {
-        showMenu(); // ancora nessun livello
+        // Solo gating
+        if (index == 2 && !SaveData.isLevelCompleted(1)) return;
+        if (index == 3 && (!SaveData.isLevelCompleted(1) || !SaveData.isLevelCompleted(2))) return;
+        showMenu();
     }
 
     @Override
