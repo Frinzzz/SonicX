@@ -1,0 +1,46 @@
+plugins {
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+def fx = '22.0.1'
+
+dependencies {
+    implementation "org.openjfx:javafx-base:${fx}:win"
+    implementation "org.openjfx:javafx-graphics:${fx}:win"
+    implementation "org.openjfx:javafx-controls:${fx}:win"
+    implementation "org.openjfx:javafx-media:${fx}:win"
+
+    
+    testImplementation libs.junit.jupiter
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+
+sourceSets {
+    main {
+        java { srcDirs = ['src'] }
+        resources {
+            srcDirs = ['src']
+            include 'game/assets/**'
+        }
+    }
+    test { java { srcDirs = ['src/test/java'] } }
+}
+
+application {
+    mainClass = 'game.Main'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
