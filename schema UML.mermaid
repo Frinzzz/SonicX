@@ -1,0 +1,252 @@
+classDiagram
+%% Enumerations
+class game_audio_Kind {
+    <<enum>>
+}
+
+class game_entities_State {
+    <<enum>>
+}
+
+class game_entities_Type {
+    <<enum>>
+}
+
+class game_world_elements_Axis {
+    <<enum>>
+}
+
+%% Interfaces
+class game_levels_Level {
+    <<interface>>
+}
+
+class game_ui_Listener {
+    <<interface>>
+}
+
+%% Main Classes
+class game_Constants
+
+class game_GameApp {
+    player: Player
+    level: Level
+    l3: Level3
+    hud: HUD
+    menu: MenuSonicGrafico
+    cm: CollisionManager
+    gate: FinishGate
+}
+
+class game_Main
+
+class game_audio_SoundManager
+
+class game_camera_Camera2D
+
+class game_entities_Boss {
+    pl: Player
+    p: Projectile
+    state: State
+    cm: CollisionManager
+    onPlayerCollision(Player)
+    isStompFromAbove(Player)
+    newProjectileSmart() Projectile
+    switchState(State)
+}
+
+class game_entities_EnemyBase
+
+class game_entities_Player {
+    shield: Shield
+    st: Shield.Type
+    damageCM: CollisionManager
+    getShield() Shield
+    getShieldType() Shield.Type
+    equipShield(Shield.Type)
+    setDamageCont(CollisionManager)
+}
+
+class game_entities_Projectile
+
+class game_entities_Shield {
+    type: Type
+    Shield(Type)
+    getType() Type
+}
+
+class game_entities_ShooterEnemy {
+    left: Projectile
+    right: Projectile
+    p: Projectile
+    cm: CollisionManager
+    onPlayerCollision(Player)
+}
+
+class game_entities_WalkerEnemy
+
+class game_levels_Level1 {
+    build(Player, CollisionManager)
+}
+
+class game_levels_Level2 {
+    build(Player, CollisionManager)
+}
+
+class game_levels_Level3 {
+    boss: Boss
+    build(Player, CollisionManager)
+    getBoss() Boss
+}
+
+class game_state_SaveData
+
+class game_ui_HUD
+
+class game_ui_MenuSonicGrafico {
+    listener: Listener
+    MenuSonicGrafico(Listener)
+}
+
+class game_util_ResourceUtil
+
+class game_world_Background
+
+class game_world_CollisionManager {
+    ee: EnemyBase
+    player: Player
+    p: Projectile
+    rr: Ring
+    sp: ShieldPickup
+    addEnemy(EnemyBase)
+    CollisionManager(Player)
+    getPlayer() Player
+    isStomp(Player)
+    addProjectile(Projectile)
+    addRing(Ring)
+    addShieldPickup(ShieldPickup)
+    addLoop(LoopDeLoop)
+    addMovingPlatform(MovingPlatform)
+    addObstacle(Obstacle)
+    addPlatform(Platform)
+    addSpring(Spring)
+}
+
+class game_world_Ring
+
+class game_world_ShieldPickup {
+    type: Shield.Type
+    ShieldPickup(Shield.Type)
+    getType() Shield.Type
+}
+
+class game_world_elements_FinishGate
+
+class game_world_elements_LoopDeLoop {
+    update(Player)
+    shouldAttach(Player)
+    attach(Player)
+    detach(Player)
+    setTangentialVelocity(Player)
+    doUpdate(Player)
+}
+
+class game_world_elements_MovingPlatform {
+    axis: Axis
+    MovingPlatform(Axis)
+}
+
+class game_world_elements_Obstacle
+
+class game_world_elements_Platform
+
+class game_world_elements_Spring
+
+%% Inheritance Relationships
+game_ui_Listener <|-- game_GameApp
+game_entities_EnemyBase <|-- game_entities_Boss
+game_entities_EnemyBase <|-- game_entities_ShooterEnemy
+game_entities_EnemyBase <|-- game_entities_WalkerEnemy
+game_levels_Level <|.. game_levels_Level1
+game_levels_Level <|.. game_levels_Level2
+game_levels_Level <|.. game_levels_Level3
+
+%% Composition/Aggregation Relationships
+game_GameApp *-- game_entities_Player
+game_GameApp *-- game_levels_Level
+game_GameApp *-- game_levels_Level3
+game_GameApp *-- game_ui_HUD
+game_GameApp *-- game_ui_MenuSonicGrafico
+game_GameApp *-- game_world_CollisionManager
+game_GameApp *-- game_world_elements_FinishGate
+game_entities_Boss *-- game_entities_Player
+game_entities_Boss *-- game_entities_Projectile
+game_entities_Boss *-- game_entities_State
+game_entities_Boss *-- game_world_CollisionManager
+game_entities_Player *-- game_entities_Shield
+game_entities_Player *-- game_entities_Type
+game_entities_Player *-- game_world_CollisionManager
+game_entities_Shield *-- game_entities_Type
+game_entities_ShooterEnemy *-- game_entities_Projectile
+game_entities_ShooterEnemy *-- game_world_CollisionManager
+game_levels_Level3 *-- game_entities_Boss
+game_ui_MenuSonicGrafico *-- game_ui_Listener
+game_world_CollisionManager *-- game_entities_EnemyBase
+game_world_CollisionManager *-- game_entities_Player
+game_world_CollisionManager *-- game_entities_Projectile
+game_world_CollisionManager *-- game_world_Ring
+game_world_CollisionManager *-- game_world_ShieldPickup
+game_world_ShieldPickup *-- game_entities_Shield
+game_world_ShieldPickup *-- game_entities_Type
+game_world_elements_MovingPlatform *-- game_world_elements_Axis
+
+%% Dependency Relationships
+game_entities_Boss ..> game_entities_Player
+game_entities_Boss ..> game_entities_Projectile
+game_entities_Boss ..> game_entities_State
+game_entities_Boss ..> game_world_CollisionManager
+game_entities_EnemyBase ..> game_entities_Player
+game_entities_Player ..> game_entities_Shield
+game_entities_Player ..> game_entities_Type
+game_entities_Player ..> game_world_CollisionManager
+game_entities_Shield ..> game_entities_Type
+game_entities_ShooterEnemy ..> game_entities_Player
+game_entities_ShooterEnemy ..> game_world_CollisionManager
+game_levels_Level1 ..> game_entities_Player
+game_levels_Level1 ..> game_world_CollisionManager
+game_levels_Level2 ..> game_entities_Player
+game_levels_Level2 ..> game_world_CollisionManager
+game_levels_Level3 ..> game_entities_Boss
+game_levels_Level3 ..> game_entities_Player
+game_levels_Level3 ..> game_world_CollisionManager
+game_ui_MenuSonicGrafico ..> game_ui_Listener
+game_world_CollisionManager ..> game_entities_EnemyBase
+game_world_CollisionManager ..> game_entities_Player
+game_world_CollisionManager ..> game_entities_Projectile
+game_world_CollisionManager ..> game_world_Ring
+game_world_CollisionManager ..> game_world_ShieldPickup
+game_world_CollisionManager ..> game_world_elements_LoopDeLoop
+game_world_CollisionManager ..> game_world_elements_MovingPlatform
+game_world_CollisionManager ..> game_world_elements_Obstacle
+game_world_CollisionManager ..> game_world_elements_Platform
+game_world_CollisionManager ..> game_world_elements_Spring
+game_world_ShieldPickup ..> game_entities_Shield
+game_world_ShieldPickup ..> game_entities_Type
+game_world_elements_LoopDeLoop ..> game_entities_Player
+game_world_elements_MovingPlatform ..> game_world_elements_Axis
+game_Main ..> game_GameApp
+game_audio_SoundManager ..> game_audio_Kind
+game_GameApp ..> game_audio_SoundManager
+game_GameApp ..> game_camera_Camera2D
+game_GameApp ..> game_ui_HUD
+game_GameApp ..> game_util_ResourceUtil
+game_GameApp ..> game_state_SaveData
+game_GameApp ..> game_Constants
+game_levels_Level ..> game_world_Background
+game_levels_Level ..> game_world_elements_FinishGate
+game_levels_Level ..> game_Constants
+game_camera_Camera2D ..> game_entities_Player
+game_ui_HUD ..> game_entities_Player
+game_ui_HUD ..> game_state_SaveData
+game_util_ResourceUtil ..> game_audio_SoundManager
+game_world_elements_FinishGate ..> game_entities_Player
