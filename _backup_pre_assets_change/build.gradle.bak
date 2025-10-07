@@ -1,0 +1,43 @@
+plugins {
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+def fx = '22.0.1'
+
+// dipendenze JavaFX con classifier per Windows
+dependencies {
+    implementation "org.openjfx:javafx-base:${fx}:win"
+    implementation "org.openjfx:javafx-graphics:${fx}:win"
+    implementation "org.openjfx:javafx-controls:${fx}:win"
+    implementation "org.openjfx:javafx-media:${fx}:win"
+}
+
+application {
+    // La tua classe principale
+    mainClass = 'game.Main'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+        }
+        resources.srcDirs = []
+    }
+}
+
+tasks.processResources {
+    from('src/game/assets') {
+        into 'assets'
+    }
+}

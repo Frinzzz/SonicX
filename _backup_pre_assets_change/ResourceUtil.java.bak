@@ -1,0 +1,31 @@
+package game.util;
+
+
+import static game.util.ResourceUtil.*;
+import javafx.scene.image.Image;
+import javafx.scene.media.AudioClip;
+
+import java.net.URL;
+import java.util.Objects;
+
+/** Helpers for classpath-based resource loading (works in IDE and in a JAR). */
+public final class ResourceUtil {
+    private ResourceUtil() {}
+
+    public static String url(String classpathPath) {
+        URL u = ResourceUtil.class.getResource(classpathPath);
+        return Objects.requireNonNull(u, () -> "Resource not found: " + classpathPath).toExternalForm();
+    }
+
+    public static Image image(String classpathPath) {
+        return new Image(url(classpathPath));
+    }
+
+    public static Image image(String classpathPath, double width, double height, boolean preserveRatio, boolean smooth, boolean backgroundLoading) {
+        return new Image(url(classpathPath), width, height, preserveRatio, smooth, backgroundLoading);
+    }
+
+    public static AudioClip clip(String classpathPath) {
+        return new AudioClip(url(classpathPath));
+    }
+}
